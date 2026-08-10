@@ -6,6 +6,7 @@ from app.api.routes.prediction import router as prediction_router
 from app.core.exception_handler import register_exception_handlers
 from app.api.routes.health import router as health_router
 from app.auth.routes import router as auth_router
+from app.api.routes.history import router as history_router
 app = FastAPI(
     title="Traffic Risk Detection System API",
     version="1.0.0",

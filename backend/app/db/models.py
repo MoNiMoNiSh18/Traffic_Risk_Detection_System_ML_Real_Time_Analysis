@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, Float, String, DateTime,Boolean
+from sqlalchemy import Column, Integer, Float, String, DateTime,Boolean, ForeignKey
 from datetime import datetime
 
 from app.db.database import Base
@@ -21,7 +21,7 @@ class Prediction(Base):
 
     predicted_risk = Column(String)
     confidence = Column(Float)
-
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
 
 class User(Base):

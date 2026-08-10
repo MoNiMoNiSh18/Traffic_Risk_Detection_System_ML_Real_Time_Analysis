@@ -49,3 +49,18 @@ def get_user_by_email(db: Session, email: str):
         .filter(User.email == email)
         .first()
     )
+
+def get_user_by_id(db: Session, user_id: int):
+    return (
+        db.query(User)
+        .filter(User.id == user_id)
+        .first()
+    )
+
+def get_predictions_by_user(db: Session, user_id: int):
+    return (
+        db.query(Prediction)
+        .filter(Prediction.user_id == user_id)
+        .order_by(Prediction.created_at.desc())
+        .all()
+    )

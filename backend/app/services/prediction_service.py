@@ -3,7 +3,7 @@ from app.core.logger import logger
 from app.db.database import SessionLocal
 from app.db.crud import create_prediction
 
-def predict_risk(data):
+def predict_risk(data,user_id):
     logger.info("Prediction request received")
 
     result = predict(data)
@@ -13,9 +13,10 @@ def predict_risk(data):
     db = SessionLocal()
 
     prediction_data = {
-        **data,
-        **result
-    }
+    **data,
+    **result,
+    "user_id": user_id
+}
 
     create_prediction(db, prediction_data)
 

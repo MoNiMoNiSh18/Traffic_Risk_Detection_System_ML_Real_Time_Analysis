@@ -1,8 +1,10 @@
-from fastapi import APIRouter, HTTPException
-from app.auth.schemas import UserRegister, UserResponse
+from fastapi import APIRouter, HTTPException, Depends
 from app.auth.service import hash_password
 from app.db.database import SessionLocal
+from app.auth.schemas import UserRegister, UserResponse, UserLogin, TokenResponse
+from app.auth.security import verify_password, create_access_token
 from app.db.crud import create_user, get_user_by_email
+from fastapi.security import OAuth2PasswordRequestForm
 
 router = APIRouter(
     prefix="/api/v1/auth",
@@ -31,3 +33,39 @@ def register(user: UserRegister):
     db.close()
 
     return new_user
+
+@router.post("/login", response_model=TokenResponse)
+def login(
+    user: OAuth2PasswordRequestForm = Depends()
+):
+    db = SessionLocal()
+
+    existing_user = get_user_by_email(db, user.username)
+
+    if not existing_user:
+        db.close()
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid email or password"
+        )
+
+    if not verify_password(
+        user.password,
+        existing_user.hashed_password
+    ):
+        db.close()
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid email or password"
+        )
+
+    access_token = create_access_token(
+        {"sub": str(existing_user.id)}
+    )
+
+    db.close()
+
+    return {
+        "access_token": access_token,
+        "token_type": "bearer"
+    }
