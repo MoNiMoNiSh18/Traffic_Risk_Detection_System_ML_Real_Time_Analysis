@@ -86,7 +86,8 @@ Model Persistence
 Risk Prediction
 
 ## Model Used
-Random Forest Classifier
+
+### Random Forest Classifier
 
 Random Forest was selected for the traffic risk classification task because it works well with structured tabular data and can handle multiple traffic and environmental features.
 
@@ -96,16 +97,16 @@ The trained model is saved using Joblib and loaded by the FastAPI backend during
 
 The current system supports:
 
-User registration and login
-JWT-based authentication
-Protected prediction API
-Machine Learning based risk prediction
-Prediction confidence calculation
-Storage of predictions associated with users
-User-specific prediction history
-Browser GPS location detection
-Interactive map with the current location
-React frontend connected to the FastAPI backend
+- User registration and login
+- JWT-based authentication
+- Protected prediction API
+- Machine Learning based risk prediction
+- Prediction confidence calculation
+- Storage of predictions associated with users
+- User-specific prediction history
+- Browser GPS location detection
+- Interactive map with the current location
+- React frontend connected to the FastAPI backend
 
 The frontend can send traffic-related inputs to the backend and display the resulting risk level and confidence.
 
@@ -113,14 +114,17 @@ The frontend can send traffic-related inputs to the backend and display the resu
 
 The current trained Random Forest model achieved approximately 99% accuracy on the available evaluation dataset.
 
-## Model evaluation includes:
-Accuracy
-Classification Report
-Confusion Matrix
+Model evaluation includes:
+
+- Accuracy
+- Classification Report
+- Confusion Matrix
 
 The saved model and encoders are used for making predictions on new input data.
 
 ## Project Structure
+
+```text
 traffic-risk-system/
 │
 ├── backend/
@@ -144,56 +148,59 @@ traffic-risk-system/
 └── README.md
 
 ## How to Run
+
 ### Backend
 
 Navigate to the backend directory:
 
-cd backend
+    cd backend
 
 Install the Python dependencies:
 
-pip install -r requirements.txt
+    pip install -r requirements.txt
 
 Start the FastAPI server:
 
-uvicorn app.main:app --reload
+    uvicorn app.main:app --reload
 
 The API will be available at:
 
-http://127.0.0.1:8000
+    http://127.0.0.1:8000
 
 Swagger API documentation is available at:
 
-http://127.0.0.1:8000/docs
+    http://127.0.0.1:8000/docs
 
 ### Frontend
 
 Open another terminal and navigate to the frontend directory:
 
-cd frontend
+    cd frontend
 
 Install the dependencies:
 
-npm install
+    npm install
 
 Start the development server:
 
-npm run dev
+    npm run dev
 
 The frontend will normally be available at:
 
-http://localhost:5173
+    http://localhost:5173
 
 ## Future Enhancements
-Real-time traffic data integration
-Location-based traffic risk zones
-Accident hotspot visualization
-Risk-based route analysis
-Alternate route recommendation
-Real-time traffic dashboard
-Video-based traffic behavior analysis
-CNN and BiLSTM based traffic analysis
-Integration with smart-city transportation systems
+
+- Real-time traffic data integration
+- Location-based traffic risk zones
+- Accident hotspot visualization
+- Risk-based route analysis
+- Alternate route recommendation
+- Real-time traffic dashboard
+- Video-based traffic behavior analysis
+- CNN and BiLSTM based traffic analysis
+- Integration with smart-city transportation systems
 
 ## Author
+
 Monish V
