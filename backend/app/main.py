@@ -7,11 +7,22 @@ from app.core.exception_handler import register_exception_handlers
 from app.api.routes.health import router as health_router
 from app.auth.routes import router as auth_router
 from app.api.routes.history import router as history_router
+from fastapi.middleware.cors import CORSMiddleware
+
 app = FastAPI(
     title="Traffic Risk Detection System API",
     version="1.0.0",
     description="AI-powered Traffic Risk Detection System"
 )
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 register_exception_handlers(app)
 
 Base.metadata.create_all(bind=engine)
