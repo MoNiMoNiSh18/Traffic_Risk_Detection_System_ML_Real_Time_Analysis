@@ -11,13 +11,42 @@ function Prediction() {
   const [experience, setExperience] = useState("Intermediate");
   const [stressIndex, setStressIndex] = useState(40);
 
+  const [location, setLocation] = useState(null);
   const [prediction, setPrediction] = useState(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const getPrediction = async () => {
-    setLoading(true);
+  const getLocation = () => {
     setError("");
+
+    if (!navigator.geolocation) {
+      setError("Geolocation is not supported by this browser.");
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setLocation({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        });
+      },
+      (error) => {
+        setError(error.message);
+      }
+    );
+  };
+
+  const getPrediction = async () => {
+    setError("");
+    setPrediction(null);
+
+    if (!location) {
+      setError("Please get your current location before predicting risk.");
+      return;
+    }
+
+    setLoading(true);
 
     try {
       const response = await fetch(
@@ -37,6 +66,8 @@ function Prediction() {
             road_quality_score: roadQuality,
             driver_experience_level: experience,
             stress_index: stressIndex,
+            latitude: location.latitude,
+            longitude: location.longitude,
           }),
         }
       );
@@ -60,6 +91,14 @@ function Prediction() {
     }
   };
 
+  const getRiskClass = () => {
+    if (!prediction) {
+      return "";
+    }
+
+    return prediction.predicted_risk.toLowerCase();
+  };
+
   return (
     <div>
       <Navbar />
@@ -67,139 +106,221 @@ function Prediction() {
       <main>
         <h1>Traffic Risk Prediction</h1>
 
-        <h2>Traffic Conditions</h2>
+        <p>
+          Enter the current traffic and road conditions to
+          generate a risk prediction.
+        </p>
 
-        <label>
-          Traffic Density:
-          <input
-            type="number"
-            value={trafficDensity}
-            onChange={(e) =>
-              setTrafficDensity(Number(e.target.value))
-            }
-          />
-        </label>
+        <section>
+          <h2>Current Location</h2>
 
-        <br />
+          <button onClick={getLocation}>
+            {location ? "Update Location" : "Get Current Location"}
+          </button>
 
-        <label>
-          Horn Events per Minute:
-          <input
-            type="number"
-            value={hornEvents}
-            onChange={(e) =>
-              setHornEvents(Number(e.target.value))
-            }
-          />
-        </label>
+          {location && (
+            <div>
+              <p>
+                <strong>Latitude:</strong>{" "}
+                {location.latitude}
+              </p>
 
-        <br />
+              <p>
+                <strong>Longitude:</strong>{" "}
+                {location.longitude}
+              </p>
 
-        <label>
-          Average Speed:
-          <input
-            type="number"
-            value={avgSpeed}
-            onChange={(e) =>
-              setAvgSpeed(Number(e.target.value))
-            }
-          />
-        </label>
+              <p>Location captured successfully.</p>
+            </div>
+          )}
+        </section>
 
-        <br />
+        <section>
+          <h2>Traffic Conditions</h2>
 
-        <label>
-          Signal Wait Time:
-          <input
-            type="number"
-            value={signalWaitTime}
-            onChange={(e) =>
-              setSignalWaitTime(Number(e.target.value))
-            }
-          />
-        </label>
+          <div>
+            <label>
+              Traffic Density
+              <br />
+              <input
+                type="number"
+                min="0"
+                max="100"
+                value={trafficDensity}
+                onChange={(e) =>
+                  setTrafficDensity(Number(e.target.value))
+                }
+              />
+            </label>
+          </div>
 
-        <br />
+          <br />
 
-        <label>
-          Weather:
-          <select
-            value={weather}
-            onChange={(e) => setWeather(e.target.value)}
+          <div>
+            <label>
+              Horn Events per Minute
+              <br />
+              <input
+                type="number"
+                min="0"
+                value={hornEvents}
+                onChange={(e) =>
+                  setHornEvents(Number(e.target.value))
+                }
+              />
+            </label>
+          </div>
+
+          <br />
+
+          <div>
+            <label>
+              Average Speed
+              <br />
+              <input
+                type="number"
+                min="0"
+                max="200"
+                value={avgSpeed}
+                onChange={(e) =>
+                  setAvgSpeed(Number(e.target.value))
+                }
+              />
+            </label>
+          </div>
+
+          <br />
+
+          <div>
+            <label>
+              Signal Wait Time
+              <br />
+              <input
+                type="number"
+                min="0"
+                value={signalWaitTime}
+                onChange={(e) =>
+                  setSignalWaitTime(Number(e.target.value))
+                }
+              />
+            </label>
+          </div>
+        </section>
+
+        <section>
+          <h2>Road and Environment</h2>
+
+          <div>
+            <label>
+              Weather Condition
+              <br />
+              <select
+                value={weather}
+                onChange={(e) => setWeather(e.target.value)}
+              >
+                <option value="Clear">Clear</option>
+                <option value="Foggy">Foggy</option>
+                <option value="Hot">Hot</option>
+                <option value="Rainy">Rainy</option>
+              </select>
+            </label>
+          </div>
+
+          <br />
+
+          <div>
+            <label>
+              Road Quality Score
+              <br />
+              <input
+                type="number"
+                min="0"
+                max="10"
+                value={roadQuality}
+                onChange={(e) =>
+                  setRoadQuality(Number(e.target.value))
+                }
+              />
+            </label>
+          </div>
+        </section>
+
+        <section>
+          <h2>Driver Conditions</h2>
+
+          <div>
+            <label>
+              Driver Experience
+              <br />
+              <select
+                value={experience}
+                onChange={(e) =>
+                  setExperience(e.target.value)
+                }
+              >
+                <option value="Beginner">Beginner</option>
+                <option value="Intermediate">
+                  Intermediate
+                </option>
+                <option value="Expert">Expert</option>
+              </select>
+            </label>
+          </div>
+
+          <br />
+
+          <div>
+            <label>
+              Stress Index
+              <br />
+              <input
+                type="number"
+                min="0"
+                max="100"
+                value={stressIndex}
+                onChange={(e) =>
+                  setStressIndex(Number(e.target.value))
+                }
+              />
+            </label>
+          </div>
+        </section>
+
+        <section>
+          <button
+            onClick={getPrediction}
+            disabled={loading}
           >
-            <option value="Clear">Clear</option>
-            <option value="Rainy">Rainy</option>
-            <option value="Foggy">Foggy</option>
-          </select>
-        </label>
+            {loading ? "Analyzing..." : "Predict Risk"}
+          </button>
+        </section>
 
-        <br />
-
-        <label>
-          Road Quality:
-          <input
-            type="number"
-            min="1"
-            max="10"
-            value={roadQuality}
-            onChange={(e) =>
-              setRoadQuality(Number(e.target.value))
-            }
-          />
-        </label>
-
-        <br />
-
-        <label>
-          Driver Experience:
-          <select
-            value={experience}
-            onChange={(e) =>
-              setExperience(e.target.value)
-            }
-          >
-            <option value="Beginner">Beginner</option>
-            <option value="Intermediate">Intermediate</option>
-            <option value="Expert">Expert</option>
-          </select>
-        </label>
-
-        <br />
-
-        <label>
-          Stress Index:
-          <input
-            type="number"
-            min="0"
-            max="100"
-            value={stressIndex}
-            onChange={(e) =>
-              setStressIndex(Number(e.target.value))
-            }
-          />
-        </label>
-
-        <br />
-        <br />
-
-        <button onClick={getPrediction} disabled={loading}>
-          {loading ? "Predicting..." : "Predict Risk"}
-        </button>
-
-        {error && <p>{error}</p>}
+        {error && (
+          <section>
+            <h2>Prediction Error</h2>
+            <p>{error}</p>
+          </section>
+        )}
 
         {prediction && (
-          <div>
+          <section>
             <h2>Prediction Result</h2>
 
-            <h3>
-              Risk: {prediction.predicted_risk}
-            </h3>
+            <div className={getRiskClass()}>
+              <h3>{prediction.predicted_risk} Risk</h3>
+
+              <p>
+                <strong>
+                  Confidence: {prediction.confidence}%
+                </strong>
+              </p>
+            </div>
 
             <p>
-              Confidence: {prediction.confidence}%
+              Prediction generated successfully for the
+              current location.
             </p>
-          </div>
+          </section>
         )}
       </main>
     </div>

@@ -21,6 +21,10 @@ class Prediction(Base):
 
     predicted_risk = Column(String)
     confidence = Column(Float)
+
+    latitude = Column(Float, nullable=True)
+    longitude = Column(Float, nullable=True)
+
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
 

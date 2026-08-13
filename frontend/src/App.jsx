@@ -5,6 +5,7 @@ import Dashboard from "./pages/Dashboard";
 import Location from "./pages/Location";
 import Prediction from "./pages/Prediction";
 import History from "./pages/History";
+import RiskMap from "./pages/RiskMap";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/location" element={<Location />} />
         <Route path="/prediction" element={<Prediction />} />
         <Route path="/history" element={<History />} />
+        <Route path="/risk-map" element={<RiskMap />} />
       </Routes>
     </BrowserRouter>
   );

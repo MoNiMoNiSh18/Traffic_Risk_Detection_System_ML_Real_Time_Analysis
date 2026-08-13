@@ -24,6 +24,9 @@ class PredictionRequest(BaseModel):
 
     stress_index: float = Field(..., ge=0, le=100)
 
+    latitude: float | None = None
+    longitude: float | None = None
+
 
 class PredictionResponse(BaseModel):
     predicted_risk: str

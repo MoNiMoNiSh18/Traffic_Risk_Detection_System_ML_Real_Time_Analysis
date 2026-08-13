@@ -11,12 +11,18 @@ import Navbar from "../components/Navbar";
 
 function Location() {
   const [location, setLocation] = useState(null);
-  const [risk, setRisk] = useState("Low");
-  const [confidence, setConfidence] = useState(0);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const getLocation = () => {
     setError("");
+    setLoading(true);
+
+    if (!navigator.geolocation) {
+      setError("Geolocation is not supported by this browser.");
+      setLoading(false);
+      return;
+    }
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -24,9 +30,17 @@ function Location() {
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
         });
+
+        setLoading(false);
       },
       (error) => {
         setError(error.message);
+        setLoading(false);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0,
       }
     );
   };
@@ -38,23 +52,53 @@ function Location() {
       <main>
         <h1>Location Details</h1>
 
-        <button onClick={getLocation}>
-          Get My Location
-        </button>
+        <p>
+          Detect and view your current location using
+          browser-based GPS services.
+        </p>
 
-        {error && <p>{error}</p>}
+        <section>
+          <h2>Current Location</h2>
+
+          <button
+            onClick={getLocation}
+            disabled={loading}
+          >
+            {loading
+              ? "Detecting Location..."
+              : location
+              ? "Update Location"
+              : "Get My Location"}
+          </button>
+
+          {error && (
+            <p>
+              <strong>Location Error:</strong> {error}
+            </p>
+          )}
+
+          {location && (
+            <div>
+              <p>
+                <strong>Latitude:</strong>{" "}
+                {location.latitude}
+              </p>
+
+              <p>
+                <strong>Longitude:</strong>{" "}
+                {location.longitude}
+              </p>
+
+              <p>
+                Location detected successfully.
+              </p>
+            </div>
+          )}
+        </section>
 
         {location && (
-          <>
-            <h2>Current Location</h2>
-
-            <p>
-              Latitude: {location.latitude}
-            </p>
-
-            <p>
-              Longitude: {location.longitude}
-            </p>
+          <section>
+            <h2>Location Map</h2>
 
             <MapContainer
               center={[
@@ -77,33 +121,23 @@ function Location() {
                   location.latitude,
                   location.longitude,
                 ]}
-                radius={15}
+                radius={12}
                 pathOptions={{
-                  color:
-                    risk === "High"
-                      ? "red"
-                      : risk === "Medium"
-                      ? "orange"
-                      : "green",
-
-                  fillColor:
-                    risk === "High"
-                      ? "red"
-                      : risk === "Medium"
-                      ? "orange"
-                      : "green",
-
-                  fillOpacity: 0.7,
+                  color: "blue",
+                  fillColor: "blue",
+                  fillOpacity: 0.6,
                 }}
               >
                 <Popup>
-                  Current Traffic Risk: {risk}
+                  <strong>Current Location</strong>
                   <br />
-                  Confidence: {confidence}%
+                  Latitude: {location.latitude}
+                  <br />
+                  Longitude: {location.longitude}
                 </Popup>
               </CircleMarker>
             </MapContainer>
-          </>
+          </section>
         )}
       </main>
     </div>

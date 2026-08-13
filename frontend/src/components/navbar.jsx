@@ -10,13 +10,14 @@ function Navbar() {
 
   return (
     <nav>
-      <h2>Traffic Risk System</h2>
+      <h2>RoadSense</h2>
 
       <div>
         <Link to="/dashboard">Dashboard</Link>{" "}
-        <Link to="/location">Location Details</Link>{" "}
+        <Link to="/location">Location</Link>{" "}
         <Link to="/prediction">Prediction</Link>{" "}
-        <Link to="/history">View Predictions</Link>{" "}
+        <Link to="/history">History</Link>{" "}
+        <Link to="/risk-map">Risk Map</Link>{" "}
         <button onClick={logout}>Logout</button>
       </div>
     </nav>
