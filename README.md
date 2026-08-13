@@ -146,6 +146,7 @@ traffic-risk-system/
 │   └── ...
 │
 └── README.md
+```
 
 ## How to Run
 
@@ -153,41 +154,59 @@ traffic-risk-system/
 
 Navigate to the backend directory:
 
-    cd backend
+```bash
+cd backend
+```
 
 Install the Python dependencies:
 
-    pip install -r requirements.txt
+```bash
+pip install -r requirements.txt
+```
 
 Start the FastAPI server:
 
-    uvicorn app.main:app --reload
+```bash
+uvicorn app.main:app --reload
+```
 
 The API will be available at:
 
-    http://127.0.0.1:8000
+```text
+http://127.0.0.1:8000
+```
 
 Swagger API documentation is available at:
 
-    http://127.0.0.1:8000/docs
+```text
+http://127.0.0.1:8000/docs
+```
 
 ### Frontend
 
 Open another terminal and navigate to the frontend directory:
 
-    cd frontend
+```bash
+cd frontend
+```
 
 Install the dependencies:
 
-    npm install
+```bash
+npm install
+```
 
 Start the development server:
 
-    npm run dev
+```bash
+npm run dev
+```
 
 The frontend will normally be available at:
 
-    http://localhost:5173
+```text
+http://localhost:5173
+```
 
 ## Future Enhancements
 
