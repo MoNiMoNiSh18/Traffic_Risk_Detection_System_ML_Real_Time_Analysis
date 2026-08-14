@@ -42,7 +42,9 @@ function Prediction() {
     setPrediction(null);
 
     if (!location) {
-      setError("Please get your current location before predicting risk.");
+      setError(
+        "Please get your current location before predicting risk."
+      );
       return;
     }
 
@@ -96,230 +98,315 @@ function Prediction() {
       return "";
     }
 
-    return prediction.predicted_risk.toLowerCase();
+    return `prediction-risk prediction-${prediction.predicted_risk.toLowerCase()}`;
   };
 
   return (
     <div>
       <Navbar />
 
-      <main>
-        <h1>Traffic Risk Prediction</h1>
+      <main className="prediction-page">
+        {/* Header */}
+        <div className="prediction-header">
+          <div>
+            <span className="section-label">
+              ROAD RISK ANALYSIS
+            </span>
 
-        <p>
-          Enter the current traffic and road conditions to
-          generate a risk prediction.
-        </p>
+            <h1>Predict Road Risk</h1>
 
-        <section>
-          <h2>Current Location</h2>
+            <p>
+              Enter the current traffic, road, environmental,
+              and driver conditions to generate an AI-based
+              risk assessment.
+            </p>
+          </div>
+        </div>
 
-          <button onClick={getLocation}>
-            {location ? "Update Location" : "Get Current Location"}
-          </button>
-
-          {location && (
+        {/* Location */}
+        <section className="prediction-location card">
+          <div className="prediction-section-heading">
             <div>
-              <p>
-                <strong>Latitude:</strong>{" "}
-                {location.latitude}
-              </p>
+              <span className="form-step">01</span>
+
+              <div>
+                <h2>Current Location</h2>
+
+                <p>
+                  Capture your current position for
+                  location-based risk analysis.
+                </p>
+              </div>
+            </div>
+
+            <button onClick={getLocation}>
+              {location
+                ? "Update Location"
+                : "Get Current Location"}
+            </button>
+          </div>
+
+          {location ? (
+            <div className="location-status">
+              <span className="location-dot">●</span>
+
+              <div>
+                <strong>Location captured successfully</strong>
+
+                <p>
+                  {location.latitude.toFixed(6)},{" "}
+                  {location.longitude.toFixed(6)}
+                </p>
+              </div>
+            </div>
+          ) : (
+            <div className="location-empty">
+              <span>⌖</span>
 
               <p>
-                <strong>Longitude:</strong>{" "}
-                {location.longitude}
+                Your location is required before generating
+                a prediction.
               </p>
-
-              <p>Location captured successfully.</p>
             </div>
           )}
         </section>
 
-        <section>
-          <h2>Traffic Conditions</h2>
+        {/* Form */}
+        <div className="prediction-grid">
+          {/* Traffic */}
+          <section className="prediction-card card">
+            <div className="prediction-card-header">
+              <span className="form-step">02</span>
 
-          <div>
-            <label>
-              Traffic Density
-              <br />
-              <input
-                type="number"
-                min="0"
-                max="100"
-                value={trafficDensity}
-                onChange={(e) =>
-                  setTrafficDensity(Number(e.target.value))
-                }
-              />
-            </label>
-          </div>
+              <div>
+                <h2>Traffic Conditions</h2>
 
-          <br />
+                <p>
+                  Current traffic activity and road movement.
+                </p>
+              </div>
+            </div>
 
-          <div>
-            <label>
-              Horn Events per Minute
-              <br />
-              <input
-                type="number"
-                min="0"
-                value={hornEvents}
-                onChange={(e) =>
-                  setHornEvents(Number(e.target.value))
-                }
-              />
-            </label>
-          </div>
+            <div className="prediction-fields">
+              <label>
+                Traffic Density
+                <span>0–100</span>
 
-          <br />
+                <input
+                  type="number"
+                  min="0"
+                  max="100"
+                  value={trafficDensity}
+                  onChange={(e) =>
+                    setTrafficDensity(Number(e.target.value))
+                  }
+                />
+              </label>
 
-          <div>
-            <label>
-              Average Speed
-              <br />
-              <input
-                type="number"
-                min="0"
-                max="200"
-                value={avgSpeed}
-                onChange={(e) =>
-                  setAvgSpeed(Number(e.target.value))
-                }
-              />
-            </label>
-          </div>
+              <label>
+                Horn Events per Minute
 
-          <br />
+                <input
+                  type="number"
+                  min="0"
+                  value={hornEvents}
+                  onChange={(e) =>
+                    setHornEvents(Number(e.target.value))
+                  }
+                />
+              </label>
 
-          <div>
-            <label>
-              Signal Wait Time
-              <br />
-              <input
-                type="number"
-                min="0"
-                value={signalWaitTime}
-                onChange={(e) =>
-                  setSignalWaitTime(Number(e.target.value))
-                }
-              />
-            </label>
-          </div>
-        </section>
+              <label>
+                Average Speed
+                <span>km/h</span>
 
-        <section>
-          <h2>Road and Environment</h2>
+                <input
+                  type="number"
+                  min="0"
+                  max="200"
+                  value={avgSpeed}
+                  onChange={(e) =>
+                    setAvgSpeed(Number(e.target.value))
+                  }
+                />
+              </label>
 
-          <div>
-            <label>
-              Weather Condition
-              <br />
-              <select
-                value={weather}
-                onChange={(e) => setWeather(e.target.value)}
-              >
-                <option value="Clear">Clear</option>
-                <option value="Foggy">Foggy</option>
-                <option value="Hot">Hot</option>
-                <option value="Rainy">Rainy</option>
-              </select>
-            </label>
-          </div>
+              <label>
+                Signal Wait Time
+                <span>seconds</span>
 
-          <br />
+                <input
+                  type="number"
+                  min="0"
+                  value={signalWaitTime}
+                  onChange={(e) =>
+                    setSignalWaitTime(Number(e.target.value))
+                  }
+                />
+              </label>
+            </div>
+          </section>
 
-          <div>
-            <label>
-              Road Quality Score
-              <br />
-              <input
-                type="number"
-                min="0"
-                max="10"
-                value={roadQuality}
-                onChange={(e) =>
-                  setRoadQuality(Number(e.target.value))
-                }
-              />
-            </label>
-          </div>
-        </section>
+          {/* Environment */}
+          <section className="prediction-card card">
+            <div className="prediction-card-header">
+              <span className="form-step">03</span>
 
-        <section>
-          <h2>Driver Conditions</h2>
+              <div>
+                <h2>Road & Environment</h2>
 
-          <div>
-            <label>
-              Driver Experience
-              <br />
-              <select
-                value={experience}
-                onChange={(e) =>
-                  setExperience(e.target.value)
-                }
-              >
-                <option value="Beginner">Beginner</option>
-                <option value="Intermediate">
-                  Intermediate
-                </option>
-                <option value="Expert">Expert</option>
-              </select>
-            </label>
-          </div>
+                <p>
+                  Environmental and road condition factors.
+                </p>
+              </div>
+            </div>
 
-          <br />
+            <div className="prediction-fields">
+              <label>
+                Weather Condition
 
-          <div>
-            <label>
-              Stress Index
-              <br />
-              <input
-                type="number"
-                min="0"
-                max="100"
-                value={stressIndex}
-                onChange={(e) =>
-                  setStressIndex(Number(e.target.value))
-                }
-              />
-            </label>
-          </div>
-        </section>
+                <select
+                  value={weather}
+                  onChange={(e) =>
+                    setWeather(e.target.value)
+                  }
+                >
+                  <option value="Clear">Clear</option>
+                  <option value="Foggy">Foggy</option>
+                  <option value="Hot">Hot</option>
+                  <option value="Rainy">Rainy</option>
+                </select>
+              </label>
 
-        <section>
-          <button
-            onClick={getPrediction}
-            disabled={loading}
-          >
-            {loading ? "Analyzing..." : "Predict Risk"}
-          </button>
-        </section>
+              <label>
+                Road Quality Score
+                <span>0–10</span>
 
+                <input
+                  type="number"
+                  min="0"
+                  max="10"
+                  value={roadQuality}
+                  onChange={(e) =>
+                    setRoadQuality(Number(e.target.value))
+                  }
+                />
+              </label>
+            </div>
+          </section>
+
+          {/* Driver */}
+          <section className="prediction-card card">
+            <div className="prediction-card-header">
+              <span className="form-step">04</span>
+
+              <div>
+                <h2>Driver Conditions</h2>
+
+                <p>
+                  Driver experience and stress indicators.
+                </p>
+              </div>
+            </div>
+
+            <div className="prediction-fields">
+              <label>
+                Driver Experience
+
+                <select
+                  value={experience}
+                  onChange={(e) =>
+                    setExperience(e.target.value)
+                  }
+                >
+                  <option value="Beginner">Beginner</option>
+                  <option value="Intermediate">
+                    Intermediate
+                  </option>
+                  <option value="Expert">Expert</option>
+                </select>
+              </label>
+
+              <label>
+                Stress Index
+                <span>0–100</span>
+
+                <input
+                  type="number"
+                  min="0"
+                  max="100"
+                  value={stressIndex}
+                  onChange={(e) =>
+                    setStressIndex(Number(e.target.value))
+                  }
+                />
+              </label>
+            </div>
+          </section>
+
+          {/* Analysis */}
+          <section className="prediction-action card">
+            <span className="section-label">
+              FINAL ANALYSIS
+            </span>
+
+            <h2>Ready to analyze?</h2>
+
+            <p>
+              RoadSense will evaluate the entered conditions
+              and generate a traffic risk classification.
+            </p>
+
+            <button
+              className="predict-button"
+              onClick={getPrediction}
+              disabled={loading}
+            >
+              {loading
+                ? "Analyzing Road Risk..."
+                : "Predict Road Risk →"}
+            </button>
+          </section>
+        </div>
+
+        {/* Error */}
         {error && (
-          <section>
-            <h2>Prediction Error</h2>
+          <section className="prediction-error">
+            <strong>Prediction Error</strong>
+
             <p>{error}</p>
           </section>
         )}
 
+        {/* Result */}
         {prediction && (
-          <section>
-            <h2>Prediction Result</h2>
+          <section className="prediction-result">
+            <div>
+              <span className="section-label">
+                ANALYSIS COMPLETE
+              </span>
 
-            <div className={getRiskClass()}>
-              <h3>{prediction.predicted_risk} Risk</h3>
+              <h2>Road Risk Assessment</h2>
 
               <p>
-                <strong>
-                  Confidence: {prediction.confidence}%
-                </strong>
+                Prediction generated successfully using the
+                current road and driver conditions.
               </p>
             </div>
 
-            <p>
-              Prediction generated successfully for the
-              current location.
-            </p>
+            <div className={getRiskClass()}>
+              <span className="risk-result-label">
+                PREDICTED RISK
+              </span>
+
+              <strong>
+                {prediction.predicted_risk}
+              </strong>
+
+              <span>
+                {prediction.confidence}% confidence
+              </span>
+            </div>
           </section>
         )}
       </main>
