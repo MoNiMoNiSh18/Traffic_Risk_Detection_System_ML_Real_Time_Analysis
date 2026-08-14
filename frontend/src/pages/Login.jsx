@@ -204,7 +204,31 @@ function Login() {
         >
           {loading ? "Signing in..." : "Sign In"}
         </button>
-
+          <p
+  style={{
+    textAlign: "center",
+    marginTop: "20px",
+    marginBottom: 0,
+    color: "#6b7280",
+    fontSize: "14px",
+  }}
+>
+  Don't have an account?{" "}
+  <button
+    onClick={() => navigate("/register")}
+    style={{
+      border: "none",
+      background: "none",
+      color: "#2563eb",
+      fontWeight: "600",
+      cursor: "pointer",
+      padding: 0,
+      fontSize: "14px",
+    }}
+  >
+    Create Account
+  </button>
+</p>
         <p
           style={{
             textAlign: "center",
