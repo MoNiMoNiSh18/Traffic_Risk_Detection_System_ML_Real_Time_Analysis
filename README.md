@@ -221,6 +221,10 @@ The saved model and encoders are used to generate predictions for new traffic an
 
 ![RoadSense Login](screenshots/login.png)
 
+### Register
+
+![RoadSense Register](screenshots/register.png)
+
 ### Dashboard
 
 ![RoadSense Dashboard](screenshots/dashboard.png)
@@ -232,10 +236,6 @@ The saved model and encoders are used to generate predictions for new traffic an
 ### Traffic Risk Prediction
 
 ![RoadSense Prediction](screenshots/prediction.png)
-
-### Prediction Result
-
-![RoadSense Prediction Result](screenshots/prediction-result.png)
 
 ### Prediction History
 
