@@ -9,28 +9,33 @@ function Navbar() {
     navigate("/");
   };
 
-const navLinkStyle = (path) => ({
-  color: location.pathname === path ? "#ffffff" : "#d1d5db",
-  textDecoration: "none",
-  fontWeight: location.pathname === path ? "600" : "500",
-  padding: "8px 12px",
-  borderRadius: "6px",
-  backgroundColor:
-    location.pathname === path ? "#2563eb" : "transparent",
-  transition: "all 0.2s ease",
-  cursor: "pointer",
-});
+  const navLinkStyle = (path) => ({
+    color: location.pathname === path ? "#ffffff" : "#a3a3a3",
+    textDecoration: "none",
+    fontWeight: location.pathname === path ? "600" : "500",
+    padding: "9px 13px",
+    borderRadius: "7px",
+    backgroundColor:
+      location.pathname === path ? "#262626" : "transparent",
+    border:
+      location.pathname === path
+        ? "1px solid #404040"
+        : "1px solid transparent",
+    transition: "all 0.2s ease",
+    cursor: "pointer",
+  });
 
   return (
     <nav
       style={{
-        backgroundColor: "#111827",
+        backgroundColor: "#0a0a0a",
         color: "#ffffff",
         padding: "14px 30px",
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        boxShadow: "0 2px 8px rgba(0, 0, 0, 0.15)",
+        borderBottom: "1px solid #262626",
+        boxShadow: "0 2px 10px rgba(0, 0, 0, 0.3)",
       }}
     >
       <h2
@@ -39,6 +44,7 @@ const navLinkStyle = (path) => ({
           fontSize: "24px",
           fontWeight: "700",
           letterSpacing: "0.5px",
+          color: "#ffffff",
         }}
       >
         RoadSense
@@ -90,13 +96,14 @@ const navLinkStyle = (path) => ({
           onClick={logout}
           style={{
             marginLeft: "10px",
-            padding: "8px 14px",
-            border: "none",
-            borderRadius: "6px",
-            backgroundColor: "#dc2626",
+            padding: "9px 15px",
+            border: "1px solid #404040",
+            borderRadius: "7px",
+            backgroundColor: "#171717",
             color: "#ffffff",
             fontWeight: "600",
             cursor: "pointer",
+            transition: "all 0.2s ease",
           }}
         >
           Logout

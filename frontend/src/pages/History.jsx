@@ -26,7 +26,6 @@ function History() {
       }
 
       const result = await response.json();
-
       setHistory(result);
     } catch (error) {
       console.error(error);
@@ -48,133 +47,47 @@ function History() {
     (item) => item.predicted_risk === "Low"
   ).length;
 
-  const getRiskStyle = (risk) => {
-    if (risk === "High") {
-      return {
-        backgroundColor: "#fef2f2",
-        color: "#b91c1c",
-      };
-    }
-
-    if (risk === "Medium") {
-      return {
-        backgroundColor: "#fff7ed",
-        color: "#c2410c",
-      };
-    }
-
-    return {
-      backgroundColor: "#ecfdf5",
-      color: "#047857",
-    };
+  const getRiskClass = (risk) => {
+    if (risk === "High") return "risk-high";
+    if (risk === "Medium") return "risk-medium";
+    return "risk-low";
   };
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        backgroundColor: "#f3f4f6",
-      }}
-    >
+    <div>
       <Navbar />
 
-      <main
-        style={{
-          maxWidth: "1200px",
-          margin: "0 auto",
-          padding: "45px 30px",
-        }}
-      >
+      <main className="risk-map-page">
         {/* Header */}
-        <section style={{ marginBottom: "30px" }}>
-          <p
-            style={{
-              margin: "0 0 8px",
-              color: "#2563eb",
-              fontWeight: "700",
-              letterSpacing: "0.8px",
-              fontSize: "14px",
-            }}
-          >
-            ROAD RISK ANALYTICS
-          </p>
+        <section className="risk-map-header">
+          <p className="section-label">ROAD RISK ANALYTICS</p>
 
-          <h1
-            style={{
-              margin: "0 0 10px",
-              color: "#111827",
-              fontSize: "34px",
-            }}
-          >
-            Prediction History
-          </h1>
+          <h1>Prediction History</h1>
 
-          <p
-            style={{
-              margin: 0,
-              color: "#6b7280",
-              fontSize: "16px",
-              lineHeight: "1.6",
-            }}
-          >
+          <p>
             Review previous RoadSense risk predictions and
             their associated traffic conditions.
           </p>
         </section>
 
         {/* Action Card */}
-        <section
-          style={{
-            backgroundColor: "#ffffff",
-            borderRadius: "14px",
-            padding: "22px 26px",
-            border: "1px solid #e5e7eb",
-            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.06)",
-            marginBottom: "25px",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            gap: "20px",
-            flexWrap: "wrap",
-          }}
-        >
+        <section className="risk-regional-card history-action-card">
           <div>
-            <h2
-              style={{
-                margin: "0 0 5px",
-                color: "#111827",
-                fontSize: "20px",
-              }}
-            >
-              Prediction Records
-            </h2>
+            <p className="risk-card-label">
+              PREDICTION RECORDS
+            </p>
 
-            <p
-              style={{
-                margin: 0,
-                color: "#6b7280",
-              }}
-            >
-              Load your previously generated predictions.
+            <h2>Previous Predictions</h2>
+
+            <p className="history-description">
+              Load your previously generated RoadSense
+              predictions.
             </p>
           </div>
 
           <button
             onClick={getHistory}
             disabled={loading}
-            style={{
-              padding: "12px 20px",
-              border: "none",
-              borderRadius: "8px",
-              backgroundColor: loading
-                ? "#93c5fd"
-                : "#2563eb",
-              color: "#ffffff",
-              fontWeight: "600",
-              cursor: loading
-                ? "not-allowed"
-                : "pointer",
-            }}
           >
             {loading
               ? "Loading..."
@@ -184,246 +97,73 @@ function History() {
 
         {/* Error */}
         {error && (
-          <div
-            style={{
-              backgroundColor: "#fef2f2",
-              color: "#b91c1c",
-              border: "1px solid #fecaca",
-              borderRadius: "10px",
-              padding: "14px 16px",
-              marginBottom: "25px",
-            }}
-          >
-            <strong>Error:</strong> {error}
+          <div className="prediction-error">
+            <strong>Error</strong>
+            <p>{error}</p>
           </div>
         )}
 
-        {/* Summary Cards */}
+        {/* Summary */}
         {history.length > 0 && (
-          <section style={{ marginBottom: "30px" }}>
-            <h2
-              style={{
-                color: "#111827",
-                marginBottom: "18px",
-              }}
-            >
-              Prediction Summary
-            </h2>
+          <section className="risk-summary">
+            <div className="risk-section-title">
+              <h2>Prediction Summary</h2>
+            </div>
 
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns:
-                  "repeat(auto-fit, minmax(190px, 1fr))",
-                gap: "18px",
-              }}
-            >
+            <div className="risk-summary-grid">
               {/* Total */}
-              <div
-                style={{
-                  backgroundColor: "#ffffff",
-                  border: "1px solid #e5e7eb",
-                  borderRadius: "12px",
-                  padding: "22px",
-                  boxShadow:
-                    "0 4px 12px rgba(0, 0, 0, 0.05)",
-                }}
-              >
-                <p
-                  style={{
-                    margin: "0 0 8px",
-                    color: "#6b7280",
-                    fontSize: "14px",
-                  }}
-                >
-                  Total Predictions
-                </p>
-
-                <h3
-                  style={{
-                    margin: 0,
-                    fontSize: "30px",
-                    color: "#111827",
-                  }}
-                >
-                  {history.length}
-                </h3>
+              <div className="summary-stat">
+                <p>Total Predictions</p>
+                <h3>{history.length}</h3>
               </div>
 
               {/* High */}
-              <div
-                style={{
-                  backgroundColor: "#ffffff",
-                  border: "1px solid #fecaca",
-                  borderRadius: "12px",
-                  padding: "22px",
-                  boxShadow:
-                    "0 4px 12px rgba(0, 0, 0, 0.05)",
-                }}
-              >
-                <p
-                  style={{
-                    margin: "0 0 8px",
-                    color: "#b91c1c",
-                    fontSize: "14px",
-                    fontWeight: "600",
-                  }}
-                >
-                  High Risk
-                </p>
-
-                <h3
-                  style={{
-                    margin: 0,
-                    fontSize: "30px",
-                    color: "#b91c1c",
-                  }}
-                >
-                  {highRiskCount}
-                </h3>
+              <div className="summary-stat summary-high">
+                <p>High Risk</p>
+                <h3>{highRiskCount}</h3>
               </div>
 
               {/* Medium */}
-              <div
-                style={{
-                  backgroundColor: "#ffffff",
-                  border: "1px solid #fed7aa",
-                  borderRadius: "12px",
-                  padding: "22px",
-                  boxShadow:
-                    "0 4px 12px rgba(0, 0, 0, 0.05)",
-                }}
-              >
-                <p
-                  style={{
-                    margin: "0 0 8px",
-                    color: "#c2410c",
-                    fontSize: "14px",
-                    fontWeight: "600",
-                  }}
-                >
-                  Medium Risk
-                </p>
-
-                <h3
-                  style={{
-                    margin: 0,
-                    fontSize: "30px",
-                    color: "#c2410c",
-                  }}
-                >
-                  {mediumRiskCount}
-                </h3>
+              <div className="summary-stat summary-medium">
+                <p>Medium Risk</p>
+                <h3>{mediumRiskCount}</h3>
               </div>
 
               {/* Low */}
-              <div
-                style={{
-                  backgroundColor: "#ffffff",
-                  border: "1px solid #a7f3d0",
-                  borderRadius: "12px",
-                  padding: "22px",
-                  boxShadow:
-                    "0 4px 12px rgba(0, 0, 0, 0.05)",
-                }}
-              >
-                <p
-                  style={{
-                    margin: "0 0 8px",
-                    color: "#047857",
-                    fontSize: "14px",
-                    fontWeight: "600",
-                  }}
-                >
-                  Low Risk
-                </p>
-
-                <h3
-                  style={{
-                    margin: 0,
-                    fontSize: "30px",
-                    color: "#047857",
-                  }}
-                >
-                  {lowRiskCount}
-                </h3>
+              <div className="summary-stat summary-low">
+                <p>Low Risk</p>
+                <h3>{lowRiskCount}</h3>
               </div>
             </div>
           </section>
         )}
 
         {/* Empty State */}
-        {history.length === 0 && !loading && !error && (
-          <section
-            style={{
-              backgroundColor: "#ffffff",
-              borderRadius: "14px",
-              padding: "45px 30px",
-              textAlign: "center",
-              border: "1px solid #e5e7eb",
-              boxShadow:
-                "0 4px 12px rgba(0, 0, 0, 0.05)",
-            }}
-          >
-            <h2
-              style={{
-                color: "#111827",
-                marginBottom: "8px",
-              }}
-            >
-              No Prediction History
-            </h2>
+        {history.length === 0 &&
+          !loading &&
+          !error && (
+            <section className="risk-map-message">
+              <h2>No Prediction History</h2>
 
-            <p
-              style={{
-                color: "#6b7280",
-                margin: 0,
-              }}
-            >
-              Click "Load Prediction History" to retrieve
-              your previous RoadSense predictions.
-            </p>
-          </section>
-        )}
+              <p>
+                Click "Load Prediction History" to retrieve
+                your previous RoadSense predictions.
+              </p>
+            </section>
+          )}
 
         {/* Prediction Table */}
         {history.length > 0 && (
-          <section>
-            <h2
-              style={{
-                color: "#111827",
-                marginBottom: "18px",
-              }}
-            >
-              Previous Predictions
-            </h2>
+          <section className="history-table-section">
+            <div className="risk-section-title">
+              <h2>Previous Predictions</h2>
+            </div>
 
-            <div
-              style={{
-                backgroundColor: "#ffffff",
-                borderRadius: "14px",
-                border: "1px solid #e5e7eb",
-                boxShadow:
-                  "0 4px 12px rgba(0, 0, 0, 0.06)",
-                overflow: "hidden",
-              }}
-            >
-              <div style={{ overflowX: "auto" }}>
-                <table
-                  style={{
-                    width: "100%",
-                    borderCollapse: "collapse",
-                    minWidth: "950px",
-                  }}
-                >
+            <div className="history-table-card">
+              <div className="history-table-wrapper">
+                <table className="history-table">
                   <thead>
-                    <tr
-                      style={{
-                        backgroundColor: "#f9fafb",
-                        borderBottom:
-                          "1px solid #e5e7eb",
-                      }}
-                    >
+                    <tr>
                       {[
                         "ID",
                         "Risk",
@@ -436,17 +176,7 @@ function History() {
                         "Location",
                         "Created",
                       ].map((heading) => (
-                        <th
-                          key={heading}
-                          style={{
-                            padding: "14px 16px",
-                            textAlign: "left",
-                            color: "#4b5563",
-                            fontSize: "13px",
-                            fontWeight: "700",
-                            whiteSpace: "nowrap",
-                          }}
-                        >
+                        <th key={heading}>
                           {heading}
                         </th>
                       ))}
@@ -455,131 +185,60 @@ function History() {
 
                   <tbody>
                     {history.map((item) => (
-                      <tr
-                        key={item.id}
-                        style={{
-                          borderBottom:
-                            "1px solid #f3f4f6",
-                        }}
-                      >
-                        <td
-                          style={{
-                            padding: "16px",
-                            color: "#6b7280",
-                          }}
-                        >
-                          #{item.id}
-                        </td>
+                      <tr key={item.id}>
+                        <td>#{item.id}</td>
 
-                        <td style={{ padding: "16px" }}>
+                        <td>
                           <span
-                            style={{
-                              ...getRiskStyle(
-                                item.predicted_risk
-                              ),
-                              padding:
-                                "5px 10px",
-                              borderRadius:
-                                "999px",
-                              fontSize: "13px",
-                              fontWeight: "700",
-                            }}
+                            className={`risk-badge ${getRiskClass(
+                              item.predicted_risk
+                            )}`}
                           >
                             {item.predicted_risk}
                           </span>
                         </td>
 
-                        <td
-                          style={{
-                            padding: "16px",
-                            fontWeight: "600",
-                            color: "#111827",
-                          }}
-                        >
+                        <td className="history-strong">
                           {item.confidence}%
                         </td>
 
-                        <td
-                          style={{
-                            padding: "16px",
-                            color: "#4b5563",
-                          }}
-                        >
+                        <td>
                           {item.traffic_density}
                         </td>
 
-                        <td
-                          style={{
-                            padding: "16px",
-                            color: "#4b5563",
-                          }}
-                        >
+                        <td>
                           {item.avg_speed}
                         </td>
 
-                        <td
-                          style={{
-                            padding: "16px",
-                            color: "#4b5563",
-                          }}
-                        >
+                        <td>
                           {item.weather_condition}
                         </td>
 
-                        <td
-                          style={{
-                            padding: "16px",
-                            color: "#4b5563",
-                          }}
-                        >
+                        <td>
                           {item.road_quality_score}
                         </td>
 
-                        <td
-                          style={{
-                            padding: "16px",
-                            color: "#4b5563",
-                          }}
-                        >
+                        <td>
                           {item.stress_index}
                         </td>
 
-                        <td
-                          style={{
-                            padding: "16px",
-                          }}
-                        >
+                        <td>
                           {item.latitude !== null &&
                           item.longitude !== null ? (
                             <Link
                               to="/risk-map"
-                              style={{
-                                color: "#2563eb",
-                                fontWeight: "600",
-                                textDecoration:
-                                  "none",
-                              }}
+                              className="history-map-link"
                             >
                               View on Map →
                             </Link>
                           ) : (
-                            <span
-                              style={{
-                                color: "#9ca3af",
-                              }}
-                            >
+                            <span className="history-unavailable">
                               Not available
                             </span>
                           )}
                         </td>
 
-                        <td
-                          style={{
-                            padding: "16px",
-                            color: "#6b7280",
-                            whiteSpace: "nowrap",
-                          }}
-                        >
+                        <td className="history-date">
                           {new Date(
                             item.created_at
                           ).toLocaleString()}

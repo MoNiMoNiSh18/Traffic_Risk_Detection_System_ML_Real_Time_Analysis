@@ -36,8 +36,7 @@ function RiskMap() {
           );
         }
 
-        const historyResult =
-          await historyResponse.json();
+        const historyResult = await historyResponse.json();
 
         setHistory(historyResult);
 
@@ -123,100 +122,46 @@ function RiskMap() {
   };
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        backgroundColor: "#f3f4f6",
-      }}
-    >
+    <div className="page">
       <Navbar />
 
-      <main
-        style={{
-          maxWidth: "1200px",
-          margin: "0 auto",
-          padding: "45px 30px",
-        }}
-      >
+      <main className="risk-map-page">
+
         {/* Header */}
-        <section style={{ marginBottom: "30px" }}>
-          <p
-            style={{
-              margin: "0 0 8px",
-              color: "#2563eb",
-              fontWeight: "700",
-              fontSize: "14px",
-              letterSpacing: "0.5px",
-            }}
-          >
+        <section className="risk-map-header">
+          <p className="section-label">
             GEOSPATIAL ANALYSIS
           </p>
 
-          <h1
-            style={{
-              margin: "0 0 10px",
-              fontSize: "36px",
-              color: "#111827",
-            }}
-          >
-            RoadSense Risk Map
-          </h1>
+          <h1>RoadSense Risk Map</h1>
 
-          <p
-            style={{
-              margin: 0,
-              color: "#6b7280",
-              fontSize: "16px",
-              lineHeight: "1.6",
-            }}
-          >
+          <p>
             Geographic view of previous road risk
             predictions and regional risk analysis.
           </p>
         </section>
 
+        {/* Loading */}
         {loading && (
-          <section
-            style={{
-              backgroundColor: "#ffffff",
-              padding: "25px",
-              borderRadius: "12px",
-              border: "1px solid #e5e7eb",
-            }}
-          >
-            <p style={{ margin: 0 }}>
-              Loading risk data...
-            </p>
+          <section className="risk-map-message">
+            <p>Loading risk data...</p>
           </section>
         )}
 
+        {/* Error */}
         {error && (
-          <section
-            style={{
-              backgroundColor: "#fee2e2",
-              color: "#991b1b",
-              padding: "18px 20px",
-              borderRadius: "10px",
-              marginBottom: "25px",
-            }}
-          >
+          <section className="risk-map-error">
             <strong>Error:</strong> {error}
           </section>
         )}
 
+        {/* Empty */}
         {!loading &&
           locatedPredictions.length === 0 && (
-            <section
-              style={{
-                backgroundColor: "#ffffff",
-                padding: "30px",
-                borderRadius: "12px",
-                border: "1px solid #e5e7eb",
-              }}
-            >
+            <section className="risk-map-message">
               <h2>No Risk Data Available</h2>
 
-              <p style={{ color: "#6b7280" }}>
+              <p>
                 No location-based predictions are
                 available yet.
               </p>
@@ -225,420 +170,173 @@ function RiskMap() {
 
         {locatedPredictions.length > 0 && (
           <>
+
             {/* Regional Risk */}
-            <section
-              style={{
-                backgroundColor: "#ffffff",
-                borderRadius: "14px",
-                padding: "28px",
-                marginBottom: "25px",
-                border: "1px solid #e5e7eb",
-                boxShadow:
-                  "0 4px 12px rgba(0, 0, 0, 0.05)",
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  gap: "20px",
-                  flexWrap: "wrap",
-                }}
-              >
+            <section className="risk-regional-card">
+
+              <div className="risk-card-header">
+
                 <div>
-                  <p
-                    style={{
-                      margin: "0 0 6px",
-                      color: "#6b7280",
-                      fontSize: "14px",
-                      fontWeight: "600",
-                    }}
-                  >
+                  <p className="risk-card-label">
                     REGIONAL ASSESSMENT
                   </p>
 
-                  <h2
-                    style={{
-                      margin: 0,
-                      color: "#111827",
-                    }}
-                  >
-                    Regional Risk
-                  </h2>
+                  <h2>Regional Risk</h2>
                 </div>
 
                 {regionalRisk && (
                   <span
-                    style={{
-                      ...getRiskBadgeStyle(
-                        regionalRisk.regional_risk
-                      ),
-                      padding: "10px 18px",
-                      borderRadius: "999px",
-                      fontWeight: "700",
-                      fontSize: "15px",
-                    }}
+                    className="risk-badge"
+                    style={getRiskBadgeStyle(
+                      regionalRisk.regional_risk
+                    )}
                   >
                     {regionalRisk.regional_risk} Risk
                   </span>
                 )}
+
               </div>
 
               {regionalRisk && (
-                <div
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns:
-                      "repeat(auto-fit, minmax(180px, 1fr))",
-                    gap: "15px",
-                    marginTop: "25px",
-                  }}
-                >
-                  <div
-                    style={{
-                      padding: "18px",
-                      backgroundColor: "#f9fafb",
-                      borderRadius: "10px",
-                    }}
-                  >
-                    <p
-                      style={{
-                        margin: 0,
-                        color: "#6b7280",
-                        fontSize: "13px",
-                      }}
-                    >
-                      Total Predictions
-                    </p>
+                <div className="regional-stats">
 
-                    <h3
-                      style={{
-                        margin: "6px 0 0",
-                        fontSize: "26px",
-                      }}
-                    >
+                  <div className="regional-stat">
+                    <p>Total Predictions</p>
+
+                    <h3>
                       {regionalRisk.total_predictions}
                     </h3>
                   </div>
 
-                  <div
-                    style={{
-                      padding: "18px",
-                      backgroundColor: "#fef2f2",
-                      borderRadius: "10px",
-                    }}
-                  >
-                    <p
-                      style={{
-                        margin: 0,
-                        color: "#991b1b",
-                        fontSize: "13px",
-                      }}
-                    >
-                      High Risk
-                    </p>
+                  <div className="regional-stat regional-high">
+                    <p>High Risk</p>
 
-                    <h3
-                      style={{
-                        margin: "6px 0 0",
-                        fontSize: "26px",
-                        color: "#b91c1c",
-                      }}
-                    >
+                    <h3>
                       {regionalRisk.high_risk}
                     </h3>
                   </div>
 
-                  <div
-                    style={{
-                      padding: "18px",
-                      backgroundColor: "#fff7ed",
-                      borderRadius: "10px",
-                    }}
-                  >
-                    <p
-                      style={{
-                        margin: 0,
-                        color: "#c2410c",
-                        fontSize: "13px",
-                      }}
-                    >
-                      Medium Risk
-                    </p>
+                  <div className="regional-stat regional-medium">
+                    <p>Medium Risk</p>
 
-                    <h3
-                      style={{
-                        margin: "6px 0 0",
-                        fontSize: "26px",
-                        color: "#c2410c",
-                      }}
-                    >
+                    <h3>
                       {regionalRisk.medium_risk}
                     </h3>
                   </div>
 
-                  <div
-                    style={{
-                      padding: "18px",
-                      backgroundColor: "#f0fdf4",
-                      borderRadius: "10px",
-                    }}
-                  >
-                    <p
-                      style={{
-                        margin: 0,
-                        color: "#15803d",
-                        fontSize: "13px",
-                      }}
-                    >
-                      Low Risk
-                    </p>
+                  <div className="regional-stat regional-low">
+                    <p>Low Risk</p>
 
-                    <h3
-                      style={{
-                        margin: "6px 0 0",
-                        fontSize: "26px",
-                        color: "#15803d",
-                      }}
-                    >
+                    <h3>
                       {regionalRisk.low_risk}
                     </h3>
                   </div>
+
                 </div>
               )}
 
               {regionalRisk?.center && (
-                <div
-                  style={{
-                    marginTop: "20px",
-                    padding: "15px",
-                    backgroundColor: "#f9fafb",
-                    borderRadius: "10px",
-                    color: "#4b5563",
-                    fontSize: "14px",
-                  }}
-                >
+                <div className="region-center">
                   <strong>Region Center</strong>
+
                   <br />
+
                   Latitude:{" "}
                   {regionalRisk.center.latitude}
+
                   <br />
+
                   Longitude:{" "}
                   {regionalRisk.center.longitude}
                 </div>
               )}
+
             </section>
 
             {/* Prediction Summary */}
-            <section
-              style={{
-                marginBottom: "25px",
-              }}
-            >
-              <h2
-                style={{
-                  color: "#111827",
-                  marginBottom: "18px",
-                }}
-              >
-                Prediction Summary
-              </h2>
+            <section className="risk-summary">
 
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns:
-                    "repeat(auto-fit, minmax(200px, 1fr))",
-                  gap: "18px",
-                }}
-              >
-                <div
-                  style={{
-                    backgroundColor: "#ffffff",
-                    padding: "22px",
-                    borderRadius: "12px",
-                    border: "1px solid #e5e7eb",
-                  }}
-                >
-                  <p
-                    style={{
-                      margin: 0,
-                      color: "#6b7280",
-                    }}
-                  >
-                    Total Mapped
-                  </p>
+              <div className="risk-section-title">
+                <h2>Prediction Summary</h2>
+              </div>
 
-                  <h3
-                    style={{
-                      margin: "8px 0 0",
-                      fontSize: "30px",
-                      color: "#111827",
-                    }}
-                  >
+              <div className="risk-summary-grid">
+
+                <div className="summary-stat">
+                  <p>Total Mapped</p>
+
+                  <h3>
                     {locatedPredictions.length}
                   </h3>
                 </div>
 
-                <div
-                  style={{
-                    backgroundColor: "#ffffff",
-                    padding: "22px",
-                    borderRadius: "12px",
-                    border: "1px solid #fecaca",
-                  }}
-                >
-                  <p
-                    style={{
-                      margin: 0,
-                      color: "#b91c1c",
-                    }}
-                  >
-                    High Risk
-                  </p>
+                <div className="summary-stat summary-high">
+                  <p>High Risk</p>
 
-                  <h3
-                    style={{
-                      margin: "8px 0 0",
-                      fontSize: "30px",
-                      color: "#b91c1c",
-                    }}
-                  >
+                  <h3>
                     {highRiskCount}
                   </h3>
                 </div>
 
-                <div
-                  style={{
-                    backgroundColor: "#ffffff",
-                    padding: "22px",
-                    borderRadius: "12px",
-                    border: "1px solid #fed7aa",
-                  }}
-                >
-                  <p
-                    style={{
-                      margin: 0,
-                      color: "#c2410c",
-                    }}
-                  >
-                    Medium Risk
-                  </p>
+                <div className="summary-stat summary-medium">
+                  <p>Medium Risk</p>
 
-                  <h3
-                    style={{
-                      margin: "8px 0 0",
-                      fontSize: "30px",
-                      color: "#c2410c",
-                    }}
-                  >
+                  <h3>
                     {mediumRiskCount}
                   </h3>
                 </div>
 
-                <div
-                  style={{
-                    backgroundColor: "#ffffff",
-                    padding: "22px",
-                    borderRadius: "12px",
-                    border: "1px solid #bbf7d0",
-                  }}
-                >
-                  <p
-                    style={{
-                      margin: 0,
-                      color: "#15803d",
-                    }}
-                  >
-                    Low Risk
-                  </p>
+                <div className="summary-stat summary-low">
+                  <p>Low Risk</p>
 
-                  <h3
-                    style={{
-                      margin: "8px 0 0",
-                      fontSize: "30px",
-                      color: "#15803d",
-                    }}
-                  >
+                  <h3>
                     {lowRiskCount}
                   </h3>
                 </div>
+
               </div>
+
             </section>
 
             {/* Map */}
-            <section
-              style={{
-                backgroundColor: "#ffffff",
-                borderRadius: "14px",
-                padding: "22px",
-                border: "1px solid #e5e7eb",
-                boxShadow:
-                  "0 4px 12px rgba(0, 0, 0, 0.05)",
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  marginBottom: "18px",
-                  gap: "20px",
-                  flexWrap: "wrap",
-                }}
-              >
-                <div>
-                  <h2
-                    style={{
-                      margin: "0 0 5px",
-                      color: "#111827",
-                    }}
-                  >
-                    Risk Distribution Map
-                  </h2>
+            <section className="risk-map-card">
 
-                  <p
-                    style={{
-                      margin: 0,
-                      color: "#6b7280",
-                      fontSize: "14px",
-                    }}
-                  >
+              <div className="map-header">
+
+                <div>
+                  <h2>Risk Distribution Map</h2>
+
+                  <p>
                     Click a marker to view prediction
                     details.
                   </p>
                 </div>
 
-                <div
-                  style={{
-                    display: "flex",
-                    gap: "15px",
-                    flexWrap: "wrap",
-                    fontSize: "14px",
-                  }}
-                >
+                <div className="map-legend">
+
                   <span>
-                    <span style={{ color: "green" }}>
+                    <span className="legend-dot low">
                       ●
-                    </span>{" "}
+                    </span>
                     Low
                   </span>
 
                   <span>
-                    <span style={{ color: "orange" }}>
+                    <span className="legend-dot medium">
                       ●
-                    </span>{" "}
+                    </span>
                     Medium
                   </span>
 
                   <span>
-                    <span style={{ color: "red" }}>
+                    <span className="legend-dot high">
                       ●
-                    </span>{" "}
+                    </span>
                     High
                   </span>
+
                 </div>
+
               </div>
 
               <MapContainer
@@ -647,13 +345,9 @@ function RiskMap() {
                   locatedPredictions[0].longitude,
                 ]}
                 zoom={15}
-                style={{
-                  height: "600px",
-                  width: "100%",
-                  borderRadius: "10px",
-                  overflow: "hidden",
-                }}
+                className="risk-leaflet-map"
               >
+
                 <TileLayer
                   attribution="&copy; OpenStreetMap contributors"
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -680,14 +374,11 @@ function RiskMap() {
                       }}
                     >
                       <Popup>
-                        <div
-                          style={{
-                            minWidth: "210px",
-                          }}
-                        >
+
+                        <div className="risk-popup">
+
                           <h3
                             style={{
-                              marginTop: 0,
                               color: riskColor,
                             }}
                           >
@@ -740,7 +431,9 @@ function RiskMap() {
                             <strong>
                               Location:
                             </strong>
+
                             <br />
+
                             {item.latitude},{" "}
                             {item.longitude}
                           </p>
@@ -749,15 +442,21 @@ function RiskMap() {
                             <strong>
                               Recorded:
                             </strong>
+
                             <br />
+
                             {item.created_at}
                           </p>
+
                         </div>
+
                       </Popup>
                     </CircleMarker>
                   );
                 })}
+
               </MapContainer>
+
             </section>
           </>
         )}
